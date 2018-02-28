@@ -1,0 +1,24 @@
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        loggerLevel: BASIC
+        connectTimeout: 5000
+        readTimeout: 5000
+  post-api.url: https://jsonplaceholder.typicode.com
+  http-bin-api.url: https://httpbin.org
+hystrix:
+  command:
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 10000
+    "HttpBinClient#delay(int)":
+      execution.isolation.thread.timeoutInMilliseconds: 3000
+      metrics.rollingStats.timeInMilliseconds: 60000
+      circuitBreaker.requestVolumeThreshold: 5
+      circuitBreaker.errorThresholdPercentage: 50
+logging:
+  level:
+    com.parfait.simplefeign.post.client: debug
+    com.parfait.simplefeign.httpbin.client: debug
